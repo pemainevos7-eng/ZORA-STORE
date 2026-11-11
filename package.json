@@ -1,0 +1,16 @@
+{
+  "name": "zora-store",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "firebase deploy",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "deploy:rules": "firebase deploy --only firestore:rules,storage",
+    "deploy:functions": "firebase deploy --only functions",
+    "set-admin": "node scripts/set-admin.js"
+  },
+  "devDependencies": {
+    "firebase-tools": "^13.29.2",
+    "firebase-admin": "^12.7.0"
+  }
+}

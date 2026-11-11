@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101010">
+<title>ZORA STORE — Game Account Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#101010;--panel:#171717;--panel2:#202020;--line:#2b2b2b;--txt:#f4f4f4;--muted:#929292;--white:#eee;--green:#80d9a8;--red:#ff8585}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font-family:"DM Sans",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}.wrap{width:min(1200px,93%);margin:auto}
+header{height:72px;position:sticky;top:0;z-index:10;background:#101010ed;backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.nav{height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}.logo{font:700 25px "Space Grotesk";letter-spacing:-1.4px}.logo span{color:#858585}
+.links{display:flex;gap:25px;color:#aaa;font-size:13px}.links a:hover{color:white}.actions{display:flex;gap:8px;align-items:center}
+.btn{border:1px solid var(--line);background:var(--panel2);color:white;border-radius:8px;padding:10px 13px;font-size:12px}.btn.primary{background:#eee;color:#111;border-color:#eee;font-weight:800}.btn:disabled{opacity:.45;cursor:not-allowed}
+.hero{margin:34px 0 24px;border:1px solid #333;border-radius:16px;min-height:290px;display:flex;align-items:center;background:linear-gradient(90deg,#141414 5%,#141414eb 48%,#14141440),url("https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1600") center/cover}
+.hero-inner{padding:38px;max-width:650px}.eyebrow{font-size:10px;letter-spacing:3px;color:#aaa}.hero h1{font:700 clamp(36px,5vw,58px)/1.04 "Space Grotesk";letter-spacing:-2px;margin:17px 0}.hero h1 span{color:#929292}.hero p{font-size:13px;color:#aaa;line-height:1.8;max-width:470px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0 40px}.stat,.panel{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:17px}.stat strong{font:700 22px "Space Grotesk"}.stat p{margin:4px 0 0;color:var(--muted);font-size:11px}
+.heading{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px}.heading h2{font:700 25px "Space Grotesk";margin:5px 0}.heading p{font-size:12px;color:var(--muted);margin:0}.eyebrow.small{font-size:9px}
+.catalog{display:grid;grid-template-columns:195px 1fr;gap:22px;margin-bottom:55px}.sidebar{align-self:start;position:sticky;top:90px}.side-label{font-size:10px;color:#888;letter-spacing:2px;margin:3px 0 12px}.cat{display:block;width:100%;text-align:left;padding:11px;border:0;border-radius:7px;background:none;color:#aaa;font-size:12px}.cat.active,.cat:hover{background:#292929;color:white}
+.searchrow{display:flex;gap:10px;margin-bottom:14px}.searchrow input,.searchrow select,.field input,.field textarea,.field select{background:#111;border:1px solid var(--line);color:white;border-radius:8px;padding:12px;outline:none}.searchrow input{flex:1;min-width:0}.searchrow select{max-width:145px}.products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.product{overflow:hidden;background:var(--panel);border:1px solid var(--line);border-radius:11px;transition:.2s}.product:hover{border-color:#555;transform:translateY(-3px)}.product img{width:100%;height:145px;object-fit:cover;background:#222}.pbody{padding:13px}.game{color:#999;font-size:10px}.pbody h3{font-size:13px;line-height:1.45;min-height:38px;margin:7px 0}.price{font:700 17px "Space Grotesk";margin:10px 0}.meta{font-size:10px;color:#999;margin-bottom:12px}.pactions{display:flex;gap:7px}.pactions button{flex:1;padding:9px 5px;font-size:10px}
+.empty{grid-column:1/-1;border:1px dashed #444;border-radius:10px;padding:38px;text-align:center;color:#999;font-size:12px}
+.trust{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:35px 0 60px}.trust h3{font-size:13px;margin:0 0 8px}.trust p{font-size:11px;color:#999;line-height:1.7;margin:0}
+footer{border-top:1px solid var(--line);padding:28px 0;color:#888;font-size:11px}.foot{display:flex;justify-content:space-between;gap:20px}
+.overlay{display:none;position:fixed;inset:0;z-index:30;background:#000c;backdrop-filter:blur(7px);align-items:center;justify-content:center;padding:14px}.overlay.show{display:flex}.modal{width:min(540px,100%);max-height:90vh;overflow:auto;background:#191919;border:1px solid #393939;border-radius:14px;padding:22px;position:relative}.modal h2{font:700 22px "Space Grotesk";margin:0 35px 18px 0}.close{position:absolute;right:15px;top:14px;border:0;background:#292929;color:white;border-radius:7px;width:30px;height:30px}
+.field{display:grid;gap:6px;margin:12px 0}.field label{font-size:11px;color:#aaa}.field input,.field textarea,.field select{width:100%}.field textarea{min-height:80px;resize:vertical}
+.tabs{display:flex;gap:7px;margin-bottom:16px}.tabs button{flex:1}.muted{font-size:11px;color:#999;line-height:1.6}.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}
+.item{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid #333;align-items:center}.item img{width:62px;height:54px;object-fit:cover;border-radius:6px}.item .grow{flex:1}.item strong{font-size:12px}.item p{font-size:11px;color:#aaa;margin:4px 0}.item button{font-size:10px}
+.adminlist{border-top:1px solid #333;margin-top:16px}.adminline{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #333;font-size:11px}.status{font-size:10px;color:var(--green)}.notice{padding:10px;border:1px solid #3b3b3b;background:#202020;border-radius:8px;color:#bbb;font-size:11px;line-height:1.6;margin:12px 0}
+@media(max-width:800px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}.catalog{grid-template-columns:155px 1fr}.links{gap:13px}}
+@media(max-width:600px){header{height:64px}.links{display:none}.logo{font-size:22px}.hero{min-height:280px;margin-top:20px;background-position:65%}.hero-inner{padding:23px}.hero h1{font-size:38px}.stats{gap:7px}.stat{padding:12px 9px}.stat strong{font-size:17px}.stat p{font-size:9px}.catalog{display:block}.sidebar{position:static;margin-bottom:14px}.cats{display:flex;overflow:auto;gap:5px}.cat{white-space:nowrap;width:auto}.side-label{margin-bottom:8px}.products{gap:8px}.product img{height:115px}.pbody{padding:9px}.pbody h3{font-size:12px;min-height:35px}.price{font-size:14px}.searchrow{gap:6px}.searchrow select{max-width:112px;font-size:10px}.trust{grid-template-columns:1fr}.foot{flex-direction:column}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+<a class="logo" href="#">ZORA<span>STORE.</span></a>
+<nav class="links"><a href="#home">Beranda</a><a href="#catalog">Marketplace</a><a href="#trust">Keunggulan</a></nav>
+<div class="actions">
+<button class="btn" id="cartOpen">Keranjang <b id="cartCount">0</b></button>
+<button class="btn" id="authOpen">Masuk</button>
+<button class="btn" id="adminOpen" hidden>Admin</button>
+</div></div></header>
+<main class="wrap">
+<section class="hero" id="home"><div class="hero-inner">
+<div class="eyebrow">ZORA STORE / GAME ACCOUNT MARKETPLACE</div>
+<h1>YOUR GAME.<br><span>YOUR NEXT ACCOUNT.</span></h1>
+<p>Temukan akun game pilihan. Periksa informasi produk, buat pesanan, dan pantau statusnya melalui akunmu.</p>
+<a class="btn primary" href="#catalog">JELAJAHI MARKETPLACE →</a>
+</div></section>
+<section class="stats">
+<div class="stat"><strong id="productCount">—</strong><p>Produk tersedia</p></div>
+<div class="stat"><strong>REALTIME</strong><p>Sinkronisasi katalog</p></div>
+<div class="stat"><strong>SECURE</strong><p>Akun dan pesanan</p></div>
+</section>
+<section id="catalog">
+<div class="heading"><div><div class="eyebrow small">DISCOVER COLLECTION</div><h2>Marketplace Akun</h2><p>Pilih produk yang sesuai dengan kebutuhanmu.</p></div></div>
+<div class="catalog">
+<aside class="sidebar panel"><div class="side-label">KATEGORI GAME</div><div class="cats" id="cats">
+<button class="cat active" data-cat="Semua">Semua game</button>
+<button class="cat" data-cat="Free Fire">Free Fire</button>
+<button class="cat" data-cat="Mobile Legends">Mobile Legends</button>
+<button class="cat" data-cat="PUBG Mobile">PUBG Mobile</button>
+<button class="cat" data-cat="Genshin Impact">Genshin Impact</button>
+<button class="cat" data-cat="Roblox">Roblox</button>
+</div></aside>
+<div>
+<div class="searchrow"><input id="search" placeholder="Cari nama akun atau game..."><select id="sort"><option value="new">Terbaru</option><option value="low">Harga terendah</option><option value="high">Harga tertinggi</option></select></div>
+<div class="muted" id="resultCount">Memuat katalog...</div>
+<div class="products" id="products"><div class="empty">Menghubungkan ke database...</div></div>
+</div></div></section>
+<section id="trust"><div class="heading"><div><div class="eyebrow small">WHY ZORA STORE</div><h2>Belanja Lebih Jelas</h2></div></div>
+<div class="trust"><div class="panel"><h3>Informasi Produk</h3><p>Deskripsi, harga, dan ketersediaan ditampilkan sebelum pemesanan.</p></div><div class="panel"><h3>Pesanan Tercatat</h3><p>Setiap checkout membuat ID pesanan dan tersimpan pada akun pembeli.</p></div><div class="panel"><h3>Konfirmasi Admin</h3><p>Status pembayaran dan pesanan diperbarui oleh admin yang berwenang.</p></div></div></section>
+</main>
+<footer><div class="wrap foot"><div><div class="logo">ZORA<span>STORE.</span></div><p>© 2026 ZORA STORE</p></div><div>Game Account Marketplace</div></div></footer>
+
+<div class="overlay" id="authModal"><div class="modal"><button class="close" data-close="authModal">×</button><h2 id="authTitle">Masuk ke ZORA STORE</h2>
+<div class="tabs"><button class="btn primary" id="loginTab">Masuk</button><button class="btn" id="registerTab">Daftar</button></div>
+<form id="authForm"><div class="field" id="nameField" hidden><label>Nama</label><input id="authName" autocomplete="name"></div>
+<div class="field"><label>Email</label><input id="authEmail" type="email" required autocomplete="email"></div>
+<div class="field"><label>Password</label><input id="authPassword" type="password" required minlength="6" autocomplete="current-password"></div>
+<button class="btn primary" style="width:100%" id="authSubmit">Masuk</button></form>
+<button class="btn" style="width:100%;margin-top:9px" id="resetPassword">Lupa password?</button><p class="muted" id="authMessage"></p></div></div>
+
+<div class="overlay" id="detailModal"><div class="modal"><button class="close" data-close="detailModal">×</button><div id="detailBody"></div></div></div>
+<div class="overlay" id="cartModal"><div class="modal"><button class="close" data-close="cartModal">×</button><h2>Keranjang</h2><div id="cartBody"></div><div class="row" style="margin:18px 0"><b>Total</b><strong id="cartTotal" style="text-align:right">Rp0</strong></div><button class="btn primary" id="checkoutBtn" style="width:100%">BUAT PESANAN</button><p class="muted">Pesanan dibuat dengan status menunggu konfirmasi pembayaran. Jangan mengirimkan kata sandi akun game melalui formulir publik.</p></div></div>
+<div class="overlay" id="ordersModal"><div class="modal"><button class="close" data-close="ordersModal">×</button><h2>Pesanan Saya</h2><div id="ordersBody"></div></div></div>
+<div class="overlay" id="adminModal"><div class="modal"><button class="close" data-close="adminModal">×</button><h2>Admin Dashboard</h2>
+<div class="notice">Akses admin ditentukan oleh custom claim Firebase, bukan oleh tombol atau email yang ditulis di browser.</div>
+<form id="productForm">
+<div class="field"><label>Nama produk</label><input id="pName" required maxlength="90"></div>
+<div class="row"><div class="field"><label>Kategori</label><select id="pGame"><option>Free Fire</option><option>Mobile Legends</option><option>PUBG Mobile</option><option>Genshin Impact</option><option>Roblox</option></select></div><div class="field"><label>Harga (Rupiah)</label><input id="pPrice" type="number" min="1" max="100000000" required></div></div>
+<div class="row"><div class="field"><label>Jumlah stok</label><input id="pStock" type="number" min="0" max="1000" value="1" required></div><div class="field"><label>Gambar produk</label><input id="pImage" type="file" accept="image/jpeg,image/png,image/webp"></div></div>
+<div class="field"><label>Deskripsi</label><textarea id="pDesc" maxlength="2000" required></textarea></div>
+<button class="btn primary" style="width:100%">SIMPAN PRODUK</button></form>
+<h3 style="font-size:13px;margin:22px 0 8px">Produk</h3><div id="adminProducts" class="adminlist"></div>
+<h3 style="font-size:13px;margin:22px 0 8px">Pesanan masuk</h3><div id="adminOrders" class="adminlist"></div>
+</div></div>
+<script type="module" src="./app.js"></script>
+</body></html>

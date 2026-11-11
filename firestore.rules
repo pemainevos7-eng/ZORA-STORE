@@ -1,0 +1,42 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function admin() { return signedIn() && request.auth.token.admin == true; }
+
+    match /products/{productId} {
+      allow read: if (resource.data.active == true) || admin();
+      allow create: if admin()
+        && request.resource.data.keys().hasOnly([
+          'name','game','price','stock','description','imageUrl',
+          'active','createdAt','updatedAt'
+        ])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 90
+        && request.resource.data.price is int
+        && request.resource.data.price > 0
+        && request.resource.data.price <= 100000000
+        && request.resource.data.stock is int
+        && request.resource.data.stock >= 0
+        && request.resource.data.stock <= 1000
+        && request.resource.data.active is bool;
+      allow update, delete: if admin();
+    }
+
+    match /orders/{orderId} {
+      allow get, list: if admin() ||
+        (signedIn() && resource.data.buyerUid == request.auth.uid);
+      // Pesanan hanya dibuat oleh Cloud Function yang memvalidasi stok dan harga.
+      allow create, update, delete: if false;
+    }
+
+    match /profiles/{profileId} {
+      allow read: if signedIn() && resource.data.uid == request.auth.uid || admin();
+      allow create: if signedIn()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.keys().hasOnly(['uid','name','email','createdAt']);
+      allow update, delete: if false;
+    }
+  }
+}
