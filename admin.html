@@ -1,0 +1,217 @@
+
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101010">
+<title>ZORA STORE — Administration</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg:#101010;--panel:#171717;--panel2:#202020;
+--line:#303030;--txt:#f4f4f4;--muted:#929292;
+--green:#80d9a8;--red:#ff8585;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:"DM Sans",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.4;cursor:not-allowed}
+.app{display:grid;grid-template-columns:235px 1fr;min-height:100vh}
+aside{background:#141414;border-right:1px solid var(--line);padding:25px 16px;position:sticky;top:0;height:100vh}
+.logo{font:700 25px "Space Grotesk";letter-spacing:-1px;padding:5px 10px}
+.logo span{color:#888}
+.sub{font-size:9px;letter-spacing:2px;color:#777;padding:0 11px;margin-top:5px}
+.navtitle{font-size:9px;color:#777;letter-spacing:2px;margin:36px 10px 12px}
+.nav button{display:flex;align-items:center;gap:11px;width:100%;border:0;background:none;color:#999;padding:13px 12px;border-radius:7px;text-align:left;font-size:12px;margin:3px 0}
+.nav button.active,.nav button:hover{background:#292929;color:#fff}
+.nav button span{width:20px;color:#888}
+.bottom{position:absolute;bottom:22px;left:16px;right:16px}
+.userbox{border-top:1px solid var(--line);padding:15px 8px;font-size:11px;color:#aaa;overflow-wrap:anywhere}
+main{min-width:0;padding:28px 34px 60px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:32px}
+.top h1{font:700 25px "Space Grotesk";margin:0}
+.top p{font-size:11px;color:var(--muted);margin:6px 0 0}
+.btn{background:var(--panel2);color:white;border:1px solid var(--line);padding:10px 14px;border-radius:7px;font-size:11px}
+.btn.primary{background:#eee;color:#111;border-color:#eee;font-weight:800}
+.btn.danger{color:var(--red)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:27px}
+.stat,.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px}
+.stat small{font-size:10px;color:var(--muted)}
+.stat strong{display:block;font:700 25px "Space Grotesk";margin-top:13px}
+.stat p{font-size:10px;color:#777;margin:5px 0 0}
+.section{display:none}
+.section.active{display:block}
+.sectionhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:17px}
+.sectionhead h2{font:700 19px "Space Grotesk";margin:0}
+.sectionhead p{font-size:11px;color:var(--muted);margin:5px 0 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:grid;gap:7px;margin:12px 0}
+.field label{font-size:10px;color:#aaa}
+.field input,.field select,.field textarea{width:100%;background:#101010;color:white;border:1px solid var(--line);border-radius:7px;padding:12px;outline:none}
+.field textarea{min-height:90px;resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:#777}
+.formactions{display:flex;gap:8px;margin-top:17px}
+.formactions button{flex:1}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:9px;background:var(--panel)}
+table{width:100%;border-collapse:collapse;min-width:650px;text-align:left}
+th{font-size:10px;color:#888;font-weight:500;background:#1d1d1d}
+td,th{padding:13px;border-bottom:1px solid var(--line);font-size:11px}
+td{color:#ddd}
+td img{width:48px;height:42px;object-fit:cover;border-radius:5px}
+.actions{display:flex;gap:6px}
+.badge{display:inline-block;border:1px solid #444;border-radius:20px;padding:5px 9px;font-size:9px;color:#aaa}
+.badge.green{color:var(--green);border-color:#315b43}
+.badge.red{color:var(--red);border-color:#663b3b}
+.empty{padding:30px;text-align:center;color:#888;font-size:11px}
+.notice{background:#202020;border:1px solid #393939;padding:13px;border-radius:8px;color:#aaa;font-size:11px;line-height:1.7;margin-bottom:18px}
+#loginScreen{position:fixed;inset:0;z-index:10;background:#101010;display:flex;align-items:center;justify-content:center;padding:18px}
+.login{width:min(390px,100%);background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:27px}
+.login h1{font:700 27px "Space Grotesk";margin:0}
+.login p{font-size:11px;color:#999;line-height:1.7}
+.login button{width:100%;margin-top:10px}
+#error{color:var(--red);font-size:11px}
+#dashboard{display:none}
+@media(max-width:850px){
+.app{grid-template-columns:1fr}
+aside{height:auto;position:static;padding:13px}
+.logo{font-size:22px}
+.sub,.navtitle,.bottom{display:none}
+.nav{display:flex;overflow-x:auto;gap:5px;margin-top:10px}
+.nav button{white-space:nowrap;width:auto;padding:10px}
+main{padding:22px 15px}
+.stats{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:500px){
+.top h1{font-size:21px}
+.stat{padding:13px}
+.stat strong{font-size:21px}
+.grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="loginScreen">
+ <form class="login" id="loginForm">
+  <div class="logo">ZORA<span>STORE.</span></div>
+  <p>ADMINISTRATION / SECURE ACCESS</p>
+  <div class="field">
+   <label>Email administrator</label>
+   <input id="email" type="email" required autocomplete="username">
+  </div>
+  <div class="field">
+   <label>Password</label>
+   <input id="password" type="password" required autocomplete="current-password">
+  </div>
+  <button class="btn primary" id="loginBtn">MASUK DASHBOARD</button>
+  <p id="error"></p>
+ </form>
+</div>
+
+<div id="dashboard" class="app">
+<aside>
+ <div class="logo">ZORA<span>STORE.</span></div>
+ <div class="sub">ADMINISTRATION PANEL</div>
+
+ <div class="navtitle">WORKSPACE</div>
+ <nav class="nav">
+  <button class="active" data-page="overview"><span>01</span> Overview</button>
+  <button data-page="products"><span>02</span> Produk</button>
+  <button data-page="orders"><span>03</span> Pesanan</button>
+ </nav>
+
+ <div class="bottom">
+  <div class="userbox" id="adminEmail">Administrator</div>
+  <button class="btn" id="logout" style="width:100%">Keluar akun</button>
+ </div>
+</aside>
+
+<main>
+ <div class="top">
+  <div>
+   <h1 id="pageTitle">Overview</h1>
+   <p>ZORA STORE / CONTROL CENTER</p>
+  </div>
+  <button class="btn" id="refresh">Refresh data</button>
+ </div>
+
+ <section id="overview" class="section active">
+  <div class="stats">
+   <div class="stat"><small>Total produk</small><strong id="sProducts">0</strong><p>Seluruh listing</p></div>
+   <div class="stat"><small>Produk aktif</small><strong id="sActive">0</strong><p>Tersedia di marketplace</p></div>
+   <div class="stat"><small>Total pesanan</small><strong id="sOrders">0</strong><p>Semua transaksi tercatat</p></div>
+   <div class="stat"><small>Menunggu proses</small><strong id="sPending">0</strong><p>Pesanan perlu diperiksa</p></div>
+  </div>
+  <div class="panel">
+   <div class="sectionhead">
+    <div><h2>Pesanan terbaru</h2><p>Data pesanan dari Firestore</p></div>
+    <button class="btn" data-goto="orders">Lihat semua</button>
+   </div>
+   <div id="recentOrders" class="empty">Memuat data...</div>
+  </div>
+ </section>
+
+ <section id="products" class="section">
+  <div class="sectionhead">
+   <div><h2>Manajemen produk</h2><p>Tambah, edit, dan hapus listing marketplace.</p></div>
+  </div>
+  <div class="grid">
+   <div class="panel">
+    <h3 style="font-size:13px;margin:0" id="formTitle">Tambah produk baru</h3>
+    <form id="productForm">
+     <input type="hidden" id="editId">
+     <div class="field"><label>Nama produk</label><input id="pName" required maxlength="90"></div>
+     <div class="field"><label>Kategori game</label>
+      <select id="pGame">
+       <option>Free Fire</option><option>Mobile Legends</option>
+       <option>PUBG Mobile</option><option>Genshin Impact</option>
+       <option>Roblox</option>
+      </select>
+     </div>
+     <div class="grid">
+      <div class="field"><label>Harga (Rupiah)</label><input id="pPrice" type="number" min="1" max="100000000" required></div>
+      <div class="field"><label>Stok</label><input id="pStock" type="number" min="0" max="1000" value="1" required></div>
+     </div>
+     <div class="field"><label>Gambar produk</label><input id="pImage" type="file" accept="image/jpeg,image/png,image/webp"></div>
+     <div class="field"><label>Deskripsi</label><textarea id="pDesc" required maxlength="2000"></textarea></div>
+     <div class="field"><label>Status listing</label>
+      <select id="pActive"><option value="true">Aktif</option><option value="false">Nonaktif</option></select>
+     </div>
+     <div class="formactions">
+      <button class="btn primary" id="saveProduct">SIMPAN PRODUK</button>
+      <button class="btn" type="button" id="cancelEdit">RESET</button>
+     </div>
+    </form>
+   </div>
+   <div class="panel">
+    <h3 style="font-size:13px;margin:0 0 12px">Informasi</h3>
+    <div class="notice">Produk disimpan pada koleksi Firestore <b>products</b>. Perubahan akan langsung tersinkronisasi dengan katalog website utama.</div>
+    <div class="notice">Gambar produk diunggah ke Firebase Storage. Format JPG, PNG, atau WebP dengan ukuran maksimal 5 MB.</div>
+    <div class="notice">Produk nonaktif tidak akan ditampilkan pada marketplace karena website utama hanya membaca produk dengan <b>active: true</b>.</div>
+   </div>
+  </div>
+  <div class="panel" style="margin-top:16px">
+   <div class="sectionhead"><div><h2>Daftar produk</h2><p>Seluruh listing tersimpan</p></div></div>
+   <div class="tablewrap"><table>
+    <thead><tr><th>Produk</th><th>Game</th><th>Harga</th><th>Stok</th><th>Status</th><th>Aksi</th></tr></thead>
+    <tbody id="productRows"><tr><td colspan="6" class="empty">Memuat...</td></tr></tbody>
+   </table></div>
+  </div>
+ </section>
+
+ <section id="orders" class="section">
+  <div class="sectionhead"><div><h2>Manajemen pesanan</h2><p>Monitor pesanan yang masuk secara realtime.</p></div></div>
+  <div class="notice">Sebelum menandai pesanan sedang diproses, pastikan pembayaran sudah diverifikasi. Perubahan status dilakukan melalui Firebase Cloud Function.</div>
+  <div class="tablewrap"><table>
+   <thead><tr><th>ID pesanan</th><th>Pembeli</th><th>Total</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead>
+   <tbody id="orderRows"><tr><td colspan="6" class="empty">Memuat...</td></tr></tbody>
+  </table></div>
+ </section>
+</main>
+</div>
+
+<script type="module" src="./admin.js"></script>
+</body>
+</html>
